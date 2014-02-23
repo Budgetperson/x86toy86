@@ -3,6 +3,7 @@
 A Clojure library designed to convert from X86 to Y86. right now, all it does is convert the first procedure of the input into a cons tree suitable for pattern matching later
 
 ## Usage
+Use the standalone jar in target/transpiler-something-something-stanpshot-standalone.jar
 
 Takes one command line option, the path to a .S assembly file. NOTE A FEW THINGS:
   1. use gcc, not clang. outputs nicer assembly
