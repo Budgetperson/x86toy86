@@ -7,7 +7,7 @@
 (defmacro dbg[x] `(let [x# ~x] (println '~x "=" x#) x#))
 
 
-(def instruction-regex #"\s*(\w+)\s+([\w$%\(\)]+)\s*(?:,\s*([\w$%\(\)]+).*)?")
+(def instruction-regex #"\s*(\w+)(?:\s+([\w$%\(\)]+)\s*)?(?:,\s*([\w$%\(\)]+).*)?")
 
 (defn is-label [instruction]
   (re-matches #".*:" instruction))
@@ -26,7 +26,7 @@
 (defn is-directive [instruction]
   (= 
     (int (get (clojure.string/trim instruction) 0)) 
-    46))
+    46)) ;46 is ascii for "."
 
 (defn remove-directives [assembly]
   (clojure.string/join "\n" 
@@ -38,10 +38,10 @@
   (remove-directives assembly))
 
 (defn convert-to-cons-tree [assembly]
-  (procedure-to-cons-tree 
-    (first (split-into-procedures-without-label-names 
-      (preprocess assembly)))))
+  (map procedure-to-cons-tree 
+    (split-into-procedures-without-label-names 
+      (preprocess assembly))))
 
 (defn -main [& args]
-  (println
+  (time
     (convert-to-cons-tree (slurp (first args)))))
